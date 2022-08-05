@@ -1,33 +1,20 @@
-import Button from "components/Button/Button";
-import PropTypes from 'prop-types';
 import styles from '../ContactLIst/ContactList.module.css';
+import { useSelector } from 'react-redux';
+import { getContacts, getFilter } from 'redux/contacts-selectors';
+import ContactListItem from './ContactsListItem';
+export default function ContactList() {
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter);
 
-const ContactList = ({filtered,onButtonDelete}) => {
-    return (
-        <ul className={styles.list}>
-            {filtered.map(({ name, number, id }) => {
-                return (
-                    <li className={styles.item} key={id}>
-                        <p className={styles.p}>{name}</p>
-                        <p className={styles.rightP}>{number}</p>
-                        <Button text="Delete" onClick={() => {
-                            onButtonDelete(id);
-                        }} />
-                    </li>
-                );
-            })}
-        </ul>
-        )
+  const normalizedData = filter.toLowerCase();
+  const normalizedContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(normalizedData)
+  );
+  return (
+    <ul className={styles.list}>
+      {normalizedContacts.map(({ name, number, id }) => (
+        <ContactListItem name={name} number={number} id={id} key={id} />
+      ))}
+    </ul>
+  );
 }
-
-ContactList.propTypes = {
-    filtered: PropTypes.arrayOf(PropTypes.shape({
-        name:PropTypes.string.isRequired,
-        number:PropTypes.string.isRequired,
-        id:PropTypes.string.isRequired,
-
-    })),
-    onButtonDelete: PropTypes.func.isRequired,
-}
-
-export default ContactList
