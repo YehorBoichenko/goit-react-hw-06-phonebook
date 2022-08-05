@@ -1,6 +1,5 @@
 import styles from '../ContactForm/ContactForm.module.css';
-import PropTypes from 'prop-types';
-import { useDispatch, connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addContact } from 'redux/contacts-actions';
 import { useState } from 'react';
 
@@ -70,17 +69,5 @@ const ContactForm = () => {
     </>
   );
 };
-const mapStateToProps = ({ contacts }) => ({
-  contacts: contacts.items,
-});
 
-const mapDispatchToProps = dispatch => ({
-  addContact: (name, number) => dispatch(addContact(name, number)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);
-
-ContactForm.propTypes = {
-  addContact: PropTypes.func.isRequired,
-  contacts: PropTypes.array.isRequired,
-};
+export default ContactForm;
